@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const Adress = require("../backend/model/Adress.js");
+const Adress = require("./model/Adress.js");
 
 // Carrega as variáveis de ambiente do arquivo .ENV
 dotenv.config();
@@ -32,12 +32,26 @@ app.get('/api/cep/:cep', async (req, res) => {
     }
 });
 
+app.post("/api/adress", async (req, res) => {
+    const { cep, logradouro, bairro, localidade, uf } = req.body; // Extrai os dados do corpo da requisição
+    try {
+        // Cria um novo endereço com os dados extraídos
+    await new Adress({ cep, logradouro, bairro, localidade, uf }).save(); // Salva no banco de dados
+    res.status(201).json({ message: "Endereço salvo com sucesso!" }); // Retorna uma mensagem de sucesso
+  }  catch (error) {
+        // Em caso de erro
+        res
+            .status(500)
+            .json({ error: "Erro ao salvar o endereço no banco de dados!" });
+    }
+
+});
 // Obtém as variáveis do .ENV
 const dbUser = process.env.DB_USER;
 const dbPassword = process.env.DB_PASS;
 
 // Define o link de conexão com o MongoDB Atlas
-const mongoURI = `mongodb+srv://${dbUser}:${dbPassword}@clusterapi.moiy7.mongodb.net/`;
+const mongoURI = `mongodb+srv://${dbUser}:${dbPassword}@clusterapi.moiy7.mongodb.net/myDatabaseName`;
 
 // Porta que o servidor vai rodar
 const port = 3000;
