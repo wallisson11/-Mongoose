@@ -33,17 +33,18 @@ document.getElementById("cep").addEventListener("blur", async function () {
         document.querySelectorAll(".form-control input").forEach((input) => {
             input.style.borderColor = "#6a11cb"; // Altera a cor da borda
         });
-    } catch (error) {
-        console.error("Erro ao buscar o CEP!", error); // Em caso de erro
-        alert("Erro ao buscar o CEP. Verifique o console para mais detalhes"); // Em caso de erro
+} catch (error) {
+    console.error("Erro ao buscar o CEP!", error); // Em caso de erro
+    alert("Erro ao buscar o CEP. Verifique o console para mais detalhes"); // Em caso de erro
+    return; // Para a execução
+}
 
-    }
 // Obtem os valores dos campos do formulário.
-      const cep = document.getElementById("cep").value;
-      const logradouro = document.getElementById("logradouro").value;
-      const bairro = document.getElementById("bairro").value;
-      const cidade = document.getElementById("cidade").value;
-      const estado = document.getElementById("estado").value;
+const cep = document.getElementById("cep").value;
+const logradouro = document.getElementById("logradouro").value;
+const bairro = document.getElementById("bairro").value;
+const cidade = document.getElementById("cidade").value;
+const estado = document.getElementById("estado").value;
 
       try {
         // Faz uma requisição para o Backend e a consulta do CEP informado
@@ -63,9 +64,12 @@ document.getElementById("cep").addEventListener("blur", async function () {
         // Converte a resposta da req. para JSON
         const result = await response.json();
         alert(result.message); // Exibe uma mensagem de sucesso
+
+        // Limpa o formulario
+        document.getElementById('addressForm').reset();
      
         // Limpa os campos do formulário
-        document.getElementById(' .form-control').forEach((input) => {
+        document.querySelectorAll(' .form-control').forEach((input) => {
           input.style.borderColor = '#ddd'; // Borda cinza ao limpar os campos
         });
       } catch (error) {
